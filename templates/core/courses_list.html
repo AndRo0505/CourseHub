@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Courses · CourseHub{% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Courses</h1>
+    <a class="btn btn-sm btn-primary disabled" aria-disabled="true" title="Coming soon">Create</a>
+  </div>
+
+  {% if courses %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Title</th>
+            <th scope="col" class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in courses %}
+          <tr>
+            <td><span class="badge text-bg-secondary">{{ c.code }}</span></td>
+            <td>{{ c.title }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'course_detail' c.pk %}">
+                View
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info" role="alert">
+      No courses yet. Add some via <a href="/admin/" class="alert-link">Admin</a>.
+    </div>
+  {% endif %}
+{% endblock %}

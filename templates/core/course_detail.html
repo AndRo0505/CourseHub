@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ course.code }} · CourseHub{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-body">
+      <h1 class="h4 card-title mb-1">{{ course.title }}</h1>
+      <p class="text-muted mb-3">{{ course.code }}</p>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary btn-sm disabled" aria-disabled="true" title="Edit coming soon">Edit</a>
+        <button class="btn btn-outline-danger btn-sm" disabled title="Delete coming soon">Delete</button>
+        <a class="btn btn-secondary btn-sm" href="{% url 'course_list' %}">Back</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
