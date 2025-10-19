@@ -4,7 +4,7 @@
 {% block content %}
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3 mb-0">Courses</h1>
-    <a class="btn btn-sm btn-primary disabled" aria-disabled="true" title="Coming soon">Create</a>
+    <a class="btn btn-sm btn-primary" href="{% url 'course_create' %}">Create</a>
   </div>
 
   {% if courses %}
@@ -32,6 +32,8 @@
         </tbody>
       </table>
     </div>
+
+
   {% else %}
     <div class="alert alert-info" role="alert">
       No courses yet. Add some via <a href="/admin/" class="alert-link">Admin</a>.

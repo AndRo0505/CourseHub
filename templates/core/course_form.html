@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'create' %}Create Course{% else %}Edit Course{% endif %} · CourseHub{% endblock %}
+
+{% block content %}
+  <h1 class="h3 mb-3">{% if mode == 'create' %}Create Course{% else %}Edit Course{% endif %}</h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    {# TITLE FIELD #}
+    <div class="mb-3">
+      <label for="id_title" class="form-label">Title</label>
+      <input
+        type="text"
+        name="title"
+        id="id_title"
+        value="{{ form.title.value|default_if_none:'' }}"
+        class="form-control{% if form.title.errors %} is-invalid{% endif %}"
+        placeholder="e.g., Intro to HCI">
+      {% if form.title.errors %}
+        <div class="invalid-feedback">
+          {{ form.title.errors|striptags }}
+        </div>
+      {% endif %}
+    </div>
+
+    {# CODE FIELD #}
+    <div class="mb-3">
+      <label for="id_code" class="form-label">Code</label>
+      <input
+        type="text"
+        name="code"
+        id="id_code"
+        value="{{ form.code.value|default_if_none:'' }}"
+        class="form-control{% if form.code.errors %} is-invalid{% endif %}"
+        placeholder="e.g., HCI-101">
+      {% if form.code.errors %}
+        <div class="invalid-feedback">
+          {{ form.code.errors|striptags }}
+        </div>
+      {% endif %}
+      <div class="form-text">Will be uppercased on save.</div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">
+        {% if mode == 'create' %}Create{% else %}Save changes{% endif %}
+      </button>
+      <a class="btn btn-secondary" href="{% if mode == 'edit' %}{% url 'course_detail' course.pk %}{% else %}{% url 'course_list' %}{% endif %}">
+        Cancel
+      </a>
+    </div>
+  </form>
+{% endblock %}
