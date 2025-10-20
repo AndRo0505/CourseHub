@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-
-from .forms import CourseForm
-from .models import Course
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-# Create your views here.
+from .models import Course
+from .forms import CourseForm
 
 def home_redirect(request):
     return redirect('course_list')
@@ -26,7 +24,11 @@ def course_list(request):
     except EmptyPage:
         courses = paginator.page(paginator.num_pages)
 
-    return render(request, 'core/courses_list.html', {'courses': courses, 'q': q})  # CHANGED
+    return render(request, 'core/courses_list.html', {'courses': courses, 'q': q})
+
+    courses = Course.objects.order_by('code')
+    return render(request, 'core/courses_list.html', {'courses': courses})
+
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
@@ -38,8 +40,11 @@ def course_create(request):
         if form.is_valid():
             course = form.save()
             return redirect('course_detail', pk=course.pk)
+
         else:
             messages.error(request, "Please fix the errors below.")
+
+
     else:
         form = CourseForm()
     return render(request, 'core/course_form.html', {'form': form, 'mode': 'create'})
@@ -50,10 +55,14 @@ def course_update(request, pk):
         form = CourseForm(request.POST, instance=course)
         if form.is_valid():
             course = form.save()
+
             messages.success(request, f"Course {course.code} - {course.title} was updated.")
             return redirect('course_detail', pk=course.pk)
         else:
             messages.error(request, "Please fix the errors below.")
+
+            return redirect('course_detail', pk=course.pk)
+
     else:
         form = CourseForm(instance=course)
     return render(request, 'core/course_form.html', {'form': form, 'mode': 'edit', 'course': course})
